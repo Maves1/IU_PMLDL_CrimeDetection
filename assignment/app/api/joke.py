@@ -2,9 +2,11 @@ from fastapi import APIRouter, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from assignment import ROOT_DIR
 from assignment.model.joke_generation import generate_joke
 
-templates = Jinja2Templates(directory="/code/src/templates")
+
+templates = Jinja2Templates(directory=f"{ROOT_DIR}/assignment/app/templates")
 router = APIRouter()
 
 
