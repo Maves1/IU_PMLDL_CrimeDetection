@@ -8,6 +8,4 @@ assignment/__pycache__
 *.synctex.gz
 **/__pycache__/
 assignment/model/model_1
-
-
-
+assignment/model/try_this.h/
