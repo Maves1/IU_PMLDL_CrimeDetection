@@ -41,9 +41,6 @@ def generate_joke(starting_string, model_choice):
     :param sentences:
     :return:
     '''
-    print('hERE')
-    print(model_choice)
-    print(starting_string, type(starting_string))
 
     start = torch.tensor([enc.encode(starting_string)], dtype=torch.long, device=device)
 
