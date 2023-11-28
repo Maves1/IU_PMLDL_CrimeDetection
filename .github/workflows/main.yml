@@ -39,4 +39,4 @@ jobs:
             sudo docker stop $(sudo docker ps -q)
             sudo docker rm $(sudo docker ps -aq)
             sudo docker pull cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPOSITORY }}:user${{ env.IMAGE_TAG }}
-            sudo docker run -d -p 8000:8000 --name pmldl_joke_generator cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPOSITORY }}:user${{ env.IMAGE_TAG }}
+            sudo docker run -d -p 80:80 --name pmldl_joke_generator cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPOSITORY }}:user${{ env.IMAGE_TAG }}
