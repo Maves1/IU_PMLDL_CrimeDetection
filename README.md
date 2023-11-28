@@ -17,6 +17,8 @@ about models, please check out the report in `reports/report.pdf`
 
 ## Application
 
+![bla](https://github.com/timuraiz/IU_PMLDL_JokeGeneration/blob/main/reports/photo_2023-11-29_00-07-46.jpg)
+
 This project involves creating a FastAPI application that generates jokes and deploying it using Docker on Yandex Cloud. The FastAPI app exposes two endpoints: the root endpoint ("/home") for a welcome message and "/generate-joke". The application is packaged into a Docker container for easy deployment.
 
 This project demonstrates the combination of FastAPI for building a RESTful API, Docker for containerization, and Yandex Cloud for scalable and reliable deployment of the FastAPI Jokes App.
