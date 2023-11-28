@@ -1,5 +1,5 @@
 .idea
-assignment/__pycache__
+.DS_Store
 **/.DS_Store
 *.aux
 *.fdb_latexmk

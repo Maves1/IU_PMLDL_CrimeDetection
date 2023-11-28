@@ -1,13 +1,15 @@
+import math
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
 from torch.utils.data import Dataset
 from torch.utils.data.dataloader import DataLoader
-import math
-
-device = "cpu"
 
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# device = torch.device("mps")
+
+# A helper config class that contains model parameters
 class Config:
     embed_dropout = 0.1
     ff_dropout = 0.1
@@ -22,7 +24,6 @@ class Config:
     def __init__(self, vocab_size, max_seq_len) -> None:
         self.vocab_size = vocab_size
         self.max_seq_len = max_seq_len
-
 
 class SelfAttention(nn.Module):
 
@@ -44,7 +45,7 @@ class SelfAttention(nn.Module):
 
         # Mask that makes sure that attention only affects left tokens (previous, not future ones)
         self.register_buffer("bias", torch.tril(torch.ones(config.max_seq_len, config.max_seq_len))
-                             .view(1, 1, config.max_seq_len, config.max_seq_len))
+                                     .view(1, 1, config.max_seq_len, config.max_seq_len))
 
     def forward(self, x):
         B, T, C = x.size()  # batch size, seq len, num_embed
@@ -68,7 +69,6 @@ class SelfAttention(nn.Module):
 
         return y
 
-
 class Block(nn.Module):
     def __init__(self, config: Config):
         super().__init__()
@@ -79,12 +79,11 @@ class Block(nn.Module):
 
         self.ln_2 = nn.LayerNorm(config.num_embed)
 
-        # TODO: check
         self.mlp = nn.ModuleDict(dict(
-            c_fc=nn.Linear(config.num_embed, 4 * config.num_embed),
-            c_proj=nn.Linear(4 * config.num_embed, config.num_embed),
-            act=nn.GELU(),
-            dropout=nn.Dropout(config.ff_dropout),
+            c_fc    = nn.Linear(config.num_embed, 4 * config.num_embed),
+            c_proj  = nn.Linear(4 * config.num_embed, config.num_embed),
+            act     = nn.GELU(),
+            dropout = nn.Dropout(config.ff_dropout),
         ))
 
         m = self.mlp
@@ -96,18 +95,17 @@ class Block(nn.Module):
 
         return x
 
-
 class GPT(nn.Module):
     def __init__(self, config: Config) -> None:
         super().__init__()
 
         self.max_seq_len = config.max_seq_len
         self.transformer = nn.ModuleDict(dict(
-            wte=nn.Embedding(config.vocab_size, config.num_embed),
-            wpe=nn.Embedding(config.max_seq_len, config.num_embed),
-            dropout=nn.Dropout(config.embed_dropout),
-            h=nn.ModuleList([Block(config) for _ in range(config.num_blocks)]),
-            ln_f=nn.LayerNorm(config.num_embed)
+            wte = nn.Embedding(config.vocab_size, config.num_embed),
+            wpe = nn.Embedding(config.max_seq_len, config.num_embed),
+            dropout = nn.Dropout(config.embed_dropout),
+            h = nn.ModuleList([Block(config) for _ in range(config.num_blocks)]),
+            ln_f = nn.LayerNorm(config.num_embed)
         ))
 
         self.head = nn.Linear(config.num_embed, config.vocab_size)
@@ -121,23 +119,19 @@ class GPT(nn.Module):
             raise ValueError("Sequence length is > max allowed length")
 
         token_emb = self.transformer.wte(x)  # Batch size, seq length, num_embed
-        # print(f"token_emb: {token_emb}")
 
         positions = torch.arange(0, seq_len,
-                                 dtype=torch.long,
-                                 device=device).unsqueeze(0)  # (1, max_seq_len)
+                               dtype=torch.long,
+                               device=device).unsqueeze(0)  # (1, max_seq_len)
 
         pos_emb = self.transformer.wpe(positions)  # 1, max_seq_len, num_embed
 
         x = self.transformer.dropout(token_emb + pos_emb)
-        # print(f"x dropout: {x}")
 
         for block in self.transformer.h:
             x = block(x)
-        # print(f"x blocks: {x}")
 
         x = self.transformer.ln_f(x)
-        # print(f"x ln_f: {x}")
 
         logits = self.head(x)
         # print(f"logits.shape: {logits.shape}")
