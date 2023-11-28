@@ -15,12 +15,17 @@
     <div class="container">
         <form action="/joke/new_joke" method="post">
             <input type="text" name="start" placeholder="Type the beginning of your joke...">
+            <label for="model_choice">Choose a Model:</label>
+            <select name="model_choice" id="model_choice">
+                <option value="gpt">GPT from Scrach</option>
+                <option value="gpt2">GPT-2 Pre-Trained</option>
+            </select>
             <button type="submit">Complete Joke</button>
         </form>
         {% if joke %}
-        <p id="jokeResult">{{ joke }}</p>
+            <p id="jokeResult">{{ joke }}</p>
         {% else %}
-        <p id="jokeResult">Enter a joke to see the punchline!</p>
+            <p id="jokeResult">Enter a joke to see the punchline!</p>
         {% endif %}
     </div>
 </main>
