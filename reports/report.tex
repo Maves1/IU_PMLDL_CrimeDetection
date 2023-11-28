@@ -18,7 +18,7 @@
 
 \section{Fine-tuning a pre-trained GPT}
 	TODO
-    
+
 \subsection{Data Preprocessing}
 
 \subsection{Training}
@@ -32,7 +32,22 @@ of jokes from Reddit [TODO: link].
 
 \subsection{Data Preprocessing}
 
+\paragraph{}
+Dataset of our choice is a simple .csv file with each entry being a complete joke.
+
+[image here]
+
+\paragraph{}
+In order to train the model, we decided to
+\begin{enumerate}
+	\item Tokenize each entry
+	\item Add "end of text" token to each entry
+	\item Combine all preprocessed entries into a single long list of tokens
+\end{enumerate}
+
 \subsection{Training}
+
+
 
 \subsection{Results}
 

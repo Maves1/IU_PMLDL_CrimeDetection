@@ -1,6 +1,10 @@
 .idea
-model
 assignment/__pycache__
 assignment/app/static/.DS_Store
 assignment/app/static/images/.DS_Store
 assignment/app/static/images/.DS_Store
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
