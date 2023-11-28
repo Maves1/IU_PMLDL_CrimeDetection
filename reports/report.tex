@@ -3,6 +3,8 @@
 \usepackage{physics} % provides lots of nice features and commands often used in physics, it also loads some other packages (like AMSmath)
 \usepackage{siunitx} % typesets numbers with units very nicely
 \usepackage{enumerate} % allows us to customize our lists
+\usepackage{hyperref} % clickable links as text
+\usepackage{graphicx}
 
 \begin{document}
 
@@ -29,7 +31,7 @@ For the training process we used the model function that allows to put the input
 
 \begin{figure*}[ht]
 \caption{Losses of pre-trained model}
-\includegraphics[width=\textwidth]{gpt2-loss.png}
+\includegraphics[width=\textwidth]{img/gpt2-loss.png}
 \label{pic:gpt2-loss}
 \end{figure*}
 
@@ -47,15 +49,21 @@ Here you can see the few generated jokes:
 
 \section{Training a GPT from Scratch}
 
-We also came up with an idea of training a GPT from scratch. We found an implementation [TODO: parameters] and trained it on the dataset
-of jokes from Reddit [TODO: link].
+We also came up with an idea of training a GPT from scratch. We found an implementation of GPT and trained it on the \href{https://www.kaggle.com/datasets/abhinavmoudgil95/short-jokes}{dataset
+of jokes from Reddit}.
 
 \subsection{Data Preprocessing}
 
 \paragraph{}
 Dataset of our choice is a simple .csv file with each entry being a complete joke.
 
-[image here]
+[Figure \ref{pic:df-head}] shows how loss was decreasing during the training.
+
+\begin{figure*}[ht]
+\caption{dataset head}
+\includegraphics[width=\textwidth]{img/dataset_head.png}
+\label{pic:df-head}
+\end{figure*}
 
 \paragraph{}
 In order to train the model, we decided to
@@ -67,12 +75,48 @@ In order to train the model, we decided to
 
 \subsection{Training}
 
+The model was trained in the following manner:
+\begin{enumerate}
+	\item The model receives $n$ tokens as input
+	\item Token $n + 1$ becomes the label
+\end{enumerate}
 
+We've trained the model for 20 epochs on the whole dataset.
 
 \subsection{Results}
 
+Even though most of the jokes are not funny, there are also some that make you laugh simply because of their stupidity
+
+\begin{itemize}
+    \item Input: \textit{"My son"} \\
+    Output: \textit{"My son forgot to put his mind in his pants? He gave him a shit bitch."}
+    \item Input: \textit{"A man"} \\
+    Output: \textit{"A man goes to a doctors... and died of salsa after six boys... It comes back tomorrow."}
+\end{itemize}
+
 \section{Conclusion}
+\paragraph{}
+We tried different approaches to joke generation including training both pre-trained and clean models.
 
+\paragraph{}
+We have also learned how to deploy docker containers with applications that use these models.
 
+\paragraph{}
+It is worth mentioning that quality of joke generation can be improved by
+\begin{enumerate}
+    \item Training the model for a longer period of time
+    \item Using different model architectures
+    \item Using other datasets in addition to this one
+\end{enumerate}
+
+\section{References}
+\begin{enumerate}
+    \item \href{https://www.youtube.com/watch?v=kCc8FmEb1nY&t=1694s}{GPT From Scratch}
+    \item \href{https://arxiv.org/abs/1706.03762}{Attention is All You Need}
+    \item \href{https://habr.com/ru/companies/neoflex/articles/722584/}{How to train GPT}
+    \item \href{https://www.kaggle.com/code/suraj520/pytorch-train-gpt2-and-generate-text-from-it}{kaggle gpt2 training notebook}
+    \item \href{https://huggingface.co/gpt2}{GPT2 HuggingFace}
+    \item \href{https://github.com/Maves1/IU_NLP_Joke_Generator/tree/main}{JokeGeneration}
+\end{enumerate}
 
 \end{document}
