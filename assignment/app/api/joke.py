@@ -11,9 +11,9 @@ router = APIRouter()
 
 
 @router.post("/new_joke", response_class=HTMLResponse)
-def complete_joke(request: Request, start: str = Form(...)):
+def complete_joke(request: Request, start: str = Form(...), model_choice: str = Form(...)):
     try:
-        full_joke = generate_joke(start)
+        full_joke = generate_joke(start, model_choice)
         return templates.TemplateResponse("index.html", {"request": request, "joke": full_joke})
     except Exception as e:
         return HTMLResponse(content=f"<p>Error: {str(e)}</p>", status_code=500)
